@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Colorize TS</title>
+    <style>
+      body {
+        font-family: Dank Mono, monospace;
+      }
+      .mb2 {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mb2">
+      <textarea id="input" placeholder="Input" autofocus></textarea>
+    </div>
+    <button id="colorize-it" class="mb2">Colorize it</button>
+    <div id="output"></div>
+  </body>
+
+  <script>
+    document.getElementById("colorize-it").addEventListener("click", () => {
+      const input = document.getElementById("input").value;
+      console.info('RUNNING')
+      console.info(input)
+
+      const lines = input.split("\n");
+      const outputEl = document.createElement("div");
+
+      const regex = /(.+?)('.+?')(.+?)('.+)/;
+
+      for (const line of lines) {
+        const lineEl = document.createElement("div");
+        outputEl.appendChild(lineEl);
+        lineEl.style.marginTop = "20px";
+
+        const parts = line.split(regex);
+        for (let i = 0; i < parts.length; i++) {
+          const part = parts[i];
+          const partEl = document.createElement("div");
+          lineEl.appendChild(partEl);
+          partEl.style.marginLeft = `${10 * i}px`;
+          const contentEl = document.createElement("span");
+          partEl.appendChild(contentEl);
+          contentEl.textContent = part;
+          if (part.startsWith("'")) contentEl.style.backgroundColor = "yellow";
+        }
+      }
+
+      document.getElementById("output").innerHTML = outputEl.innerHTML;
+    });
+  </script>
+</html>
